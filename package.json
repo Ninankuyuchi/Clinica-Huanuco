@@ -4,8 +4,9 @@
     "description": "Intranet Clinica Huanuco",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "nodemon server"
+        "start": "node server.js",
+        "nodemon": "nodemon server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Wilder Rojas",
     "license": "ISC",
