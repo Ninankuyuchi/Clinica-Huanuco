@@ -13,7 +13,9 @@ let urlDB;
 if (process.env.NODE_ENV === 'dev') {
     urlDB = 'mongodb://localhost:27017/clinica';
 } else {
-    urlDB = 'mongodb+srv://qantu:qantuqantu123@cluster0.o7wpo.mongodb.net/clinica';
+    urlDB = process.env.MONGO_URI;
 }
 
 process.env.URLDB = urlDB;
+
+//urlDB = 'mongodb+srv://qantu:qantuqantu123@cluster0.o7wpo.mongodb.net/clinica'
