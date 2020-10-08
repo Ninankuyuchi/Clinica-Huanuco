@@ -32,3 +32,9 @@ if (process.env.NODE_ENV === 'dev') {
 process.env.URLDB = urlDB;
 
 //urlDB = 'mongodb+srv://qantu:qantuqantu123@cluster0.o7wpo.mongodb.net/clinica'
+
+// ====================================
+// Google Client ID
+// ====================================
+
+process.env.CLIENT_ID = process.env.CLIENT_ID || '116007508095-t2kcgv0u2bn736vk3g8bvlkp05bbcc0j.apps.googleusercontent.com';

@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 //se importa el path como ayuda para que inspeccione la direccion de google singin dentro de la carpeta public
 //const path = require('path');
+const path = require('path');
 
 const app = express();
 
@@ -17,6 +18,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 // parse application/json
 app.use(bodyParser.json())
+
+//Habilitar la carpeta public para que se pueda acceder desde cualquier lugar
+app.use(express.static(path.resolve(__dirname, '../public')));
+//console.log(path.resolve(__dirname, '../public'));
 
 //configuracion global de rutas
 app.use(require('./routes/index'));
