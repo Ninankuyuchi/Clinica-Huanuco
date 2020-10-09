@@ -27,6 +27,8 @@ let usuarioSchema = new Schema({
         required: [true, 'El correo es necesario']
 
     },
+    categoria: { type: Schema.Types.ObjectId, ref: 'Categoria', required: true },
+    personal: { type: Schema.Types.ObjectId, ref: 'Personal', required: true },
     password: {
         type: String,
         required: [true, 'La contraseña es obligatoria']

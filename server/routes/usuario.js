@@ -9,6 +9,10 @@ const usuario = require('../models/usuario');
 
 const app = express();
 
+const personal = require('../models/personal');
+const categoria = require('../models/categoria');
+
+
 app.get('/', (req, res) => {
     res.json({
         mensaje: "Hola Mundo"
@@ -34,8 +38,11 @@ app.get('/usuario', verificaToken, (req, res) => {
     limite = Number(limite);
 
     Usuario.find({ estado: true }, 'nombre apellido dni correo role estado google img')
+        .sort('nombre')
         .skip(desde)
         .limit(limite)
+        .populate('categoria', 'descripcion')
+        .populate('personal', 'descripcion')
         .exec((err, usuarios) => {
 
             if (err) {
@@ -55,6 +62,123 @@ app.get('/usuario', verificaToken, (req, res) => {
         });
 });
 
+// =============================
+// Obtener un usuario por ID
+// =============================
+
+app.get('/usuario/:id', verificaToken, (req, res) => {
+
+    let id = req.params.id;
+
+    Personal.findById(id)
+        .populate('categoria', 'descripcion')
+        .populate('personal', 'descripcion')
+        .exec((err, usuarioDB) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            if (!usuarioDB) {
+                return res.status(400).json({
+                    ok: false,
+                    error: {
+                        mensaje: 'El Id no existe'
+                    }
+                });
+            }
+
+            res.json({
+                ok: true,
+                usuario: usuarioDB
+            });
+
+        });
+
+});
+
+// =================================
+// Buscar usuario por termino
+// ==================================
+app.get('/usuario/buscarNombre/:termino', verificaToken, (req, res) => {
+
+    let termino = req.params.termino;
+
+    let regex = new RegExp(termino, 'i');
+
+    Usuario.find({ nombre: regex })
+        .populate('categoria', '')
+        .populate('personal', '')
+        .exec((err, usuarios) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                usuarios
+            });
+        })
+});
+
+app.get('/usuario/buscarDNI/:termino', verificaToken, (req, res) => {
+
+    let termino = req.params.termino;
+
+    let regex = new RegExp(termino, 'i');
+
+    Usuario.find({ dni: regex })
+        .populate('categoria', '')
+        .populate('personal', '')
+        .exec((err, usuarios) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                usuarios
+            });
+        })
+});
+
+app.get('/usuario/buscarCorreo/:termino', verificaToken, (req, res) => {
+
+    let termino = req.params.termino;
+
+    let regex = new RegExp(termino, 'i');
+
+    Usuario.find({ correo: regex })
+        .populate('categoria', '')
+        .populate('personal', '')
+        .exec((err, usuarios) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                usuarios
+            });
+        })
+});
+
+
 app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res) => {
 
     let body = req.body;
@@ -64,6 +188,8 @@ app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res) => {
         apellido: body.apellido,
         dni: body.dni,
         correo: body.correo,
+        categoria: body.categoria,
+        personal: body.personal,
         password: bcrypt.hashSync(body.password, 10),
         role: body.role
     });
@@ -91,7 +217,7 @@ app.post('/usuario', [verificaToken, verificaAdmin_Role], (req, res) => {
 app.put('/usuario/:id', [verificaToken, verificaAdmin_Role], function(req, res) {
 
     let id = req.params.id;
-    let body = _.pick(req.body, ['nombre', 'apellido', 'dni', 'correo', 'img', 'role', 'estado']); //Objeto, arreglo propiedades validas
+    let body = _.pick(req.body, ['nombre', 'apellido', 'dni', 'correo', 'categoria', 'personal', 'img', 'role', 'estado']); //Objeto, arreglo propiedades validas
 
     //id, objeto a modificar, 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
