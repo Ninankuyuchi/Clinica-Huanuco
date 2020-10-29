@@ -6,6 +6,9 @@ app.use(require('./usuario'));
 app.use(require('./login'));
 app.use(require('./categoria'));
 app.use(require('./personal'));
+app.use(require('./upload'));
+app.use(require('./paciente'));
+app.use(require('./cita'));
 
 
 module.exports = app;
