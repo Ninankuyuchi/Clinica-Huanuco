@@ -9,6 +9,7 @@ app.use(require('./personal'));
 app.use(require('./upload'));
 app.use(require('./paciente'));
 app.use(require('./cita'));
+app.use(require('./registroExterno'));
 
 
 module.exports = app;
