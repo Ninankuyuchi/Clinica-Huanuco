@@ -70,7 +70,7 @@ app.get('/usuario/:id', verificaToken, (req, res) => {
 
     let id = req.params.id;
 
-    Personal.findById(id)
+    Usuario.findById(id)
         .populate('categoria', 'descripcion')
         .populate('personal', 'descripcion')
         .exec((err, usuarioDB) => {

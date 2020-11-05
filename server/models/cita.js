@@ -10,7 +10,7 @@ let citaSchema = new Schema({
     paciente: { type: Schema.Types.ObjectId, ref: 'Paciente', required: true },
     triaje: { type: String, required: false },
     usuario: { type: Schema.Types.ObjectId, ref: 'Usuario' },
-    disponible: { type: Boolean, required: true, default: true },
+    disponible: { type: Boolean, default: true },
     estado: { type: String, required: true }
 });
 
