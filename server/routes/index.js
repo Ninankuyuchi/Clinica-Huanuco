@@ -11,6 +11,7 @@ app.use(require('./paciente'));
 app.use(require('./cita'));
 app.use(require('./registroExterno'));
 app.use(require('./triaje'));
+app.use(require('./especialidad'));
 
 
 module.exports = app;
